@@ -1,0 +1,262 @@
+/*--------------------- Layout and Typography ----------------------------*/
+body {
+    font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, FreeSerif, serif;
+    font-size: 15px;
+    line-height: 22px;
+    color: #252519;
+    margin: 0; padding: 0;
+}
+a {
+    color: #261a3b;
+}
+a:visited {
+    color: #261a3b;
+}
+p {
+    margin: 0 0 15px 0;
+}
+h1, h2, h3, h4, h5, h6 {
+    margin: 0px 0 15px 0;
+}
+h1 {
+    margin-top: 40px;
+}
+#container {
+    position: relative;
+}
+#background {
+    position: fixed;
+    top: 0; left: 525px; right: 0; bottom: 0;
+    background: #f5f5ff;
+    border-left: 1px solid #e5e5ee;
+    z-index: -1;
+}
+#jump_to, #jump_page {
+    background: white;
+    -webkit-box-shadow: 0 0 25px #777; -moz-box-shadow: 0 0 25px #777;
+    -webkit-border-bottom-left-radius: 5px; -moz-border-radius-bottomleft: 5px;
+    font: 10px Arial;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-align: right;
+}
+#jump_to, #jump_wrapper {
+    position: fixed;
+    right: 0; top: 0;
+    padding: 5px 10px;
+}
+#jump_wrapper {
+    padding: 0;
+    display: none;
+}
+#jump_to:hover #jump_wrapper {
+    display: block;
+}
+#jump_page {
+    padding: 5px 0 3px;
+    margin: 0 0 25px 25px;
+}
+#jump_page .source {
+    display: block;
+    padding: 5px 10px;
+    text-decoration: none;
+    border-top: 1px solid #eee;
+}
+#jump_page .source:hover {
+    background: #f5f5ff;
+}
+#jump_page .source:first-child {
+}
+table td {
+    border: 0;
+    outline: 0;
+}
+td.docs, th.docs {
+    max-width: 450px;
+    min-width: 450px;
+    min-height: 5px;
+    padding: 10px 25px 1px 50px;
+    overflow-x: hidden;
+    vertical-align: top;
+    text-align: left;
+}
+.docs pre {
+    margin: 15px 0 15px;
+    padding-left: 15px;
+}
+.docs p tt, .docs p code {
+    background: #f8f8ff;
+    border: 1px solid #dedede;
+    font-size: 12px;
+    padding: 0 0.2em;
+}
+.pilwrap {
+    position: relative;
+}
+.pilcrow {
+    font: 12px Arial;
+    text-decoration: none;
+    color: #454545;
+    position: absolute;
+    top: 3px; left: -20px;
+    padding: 1px 2px;
+    opacity: 0;
+    -webkit-transition: opacity 0.2s linear;
+}
+td.docs:hover .pilcrow {
+    opacity: 1;
+}
+td.code, th.code {
+    padding: 14px 15px 16px 25px;
+    width: 100%;
+    vertical-align: top;
+    background: #f5f5ff;
+    border-left: 1px solid #e5e5ee;
+}
+pre, tt, code {
+    font-size: 12px; line-height: 18px;
+    font-family: Menlo, Monaco, Consolas, "Lucida Console", monospace;
+    margin: 0; padding: 0;
+}
+
+
+/*---------------------- Syntax Highlighting -----------------------------*/
+td.linenos { background-color: #f0f0f0; padding-right: 10px; }
+span.lineno { background-color: #f0f0f0; padding: 0 5px 0 5px; }
+
+/**
+ * prism.js default theme for JavaScript, CSS and HTML
+ * Based on dabblet (http://dabblet.com)
+ * @author Lea Verou
+ */
+
+/*Theme*/
+
+code[class*="language-"],
+pre[class*="language-"] {
+    color: black;
+    background: none;
+    text-shadow: 0 1px white;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+}
+
+pre[class*="language-"]::-moz-selection, pre[class*="language-"] ::-moz-selection,
+code[class*="language-"]::-moz-selection, code[class*="language-"] ::-moz-selection {
+    text-shadow: none;
+}
+
+pre[class*="language-"]::selection, pre[class*="language-"] ::selection,
+code[class*="language-"]::selection, code[class*="language-"] ::selection {
+    text-shadow: none;
+}
+
+@media print {
+    code[class*="language-"],
+    pre[class*="language-"] {
+        text-shadow: none;
+    }
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+    padding: 1em;
+    margin: .5em 0;
+    overflow: auto;
+}
+
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] {
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+    padding: .1em;
+    border-radius: .3em;
+    white-space: normal;
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+    color: slategray;
+}
+
+.token.punctuation {
+    color: #999;
+}
+
+.namespace {
+    opacity: .7;
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol,
+.token.deleted {
+    color: #905;
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+    color: #690;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+    color: #9a6e3a;
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+    color: #07a;
+}
+
+.token.function,
+.token.class-name {
+    color: #DD4A68;
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+    color: #e90;
+}
+
+.token.important,
+.token.bold {
+    font-weight: bold;
+}
+.token.italic {
+    font-style: italic;
+}
+
+.token.entity {
+    cursor: help;
+}

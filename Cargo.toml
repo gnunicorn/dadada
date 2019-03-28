@@ -1,0 +1,16 @@
+[package]
+name = "dada"
+version = "0.0.1"
+authors = ["Rui  Vieira <ruidevieira@googlemail.com>"]
+description = "Artisan Rust documentation."
+homepage = "https://gitlab.com/ruivieira/dada"
+repository = "https://gitlab.com/ruivieira/dada"
+readme = "README.md"
+keywords = ["cli", "documentation", "docco", "literate"]
+categories = ["command-line-utilities"]
+license = "Apache-2.0"
+exclude = [".idea/**/*"]
+
+
+[dependencies]
+clap = "2.32.0"
