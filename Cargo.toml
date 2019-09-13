@@ -10,6 +10,14 @@ keywords = ["cli", "documentation", "dada", "docco", "literate"]
 categories = ["command-line-utilities"]
 edition = "2018"
 
+[lib]
+name = "dadada"
+path = "src/lib.rs"
+
+[[bin]]
+name = "dadada"
+path = "src/main.rs"
+
 
 [dependencies]
 clap = "2.33.0"
