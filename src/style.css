@@ -1,6 +1,6 @@
 /*--------------------- Layout and Typography ----------------------------*/
 body {
-    font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, FreeSerif, serif;
+    font-family: 'Source Serif Pro', 'Book Antiqua', Palatino, FreeSerif, serif;
     font-size: 15px;
     line-height: 22px;
     color: #252519;
@@ -62,22 +62,26 @@ h1 {
 #jump_page .source:first-child {
 }
 #main {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+.block  {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     align-items: stretch;
-    padding: 0;
+
 }
 .docs {
-    padding: 10px;
     width: 640px;
     border-right: 1px solid #e5e5ee;
-    padding-left: 15px;
+    padding: 0 25px;
     background: white;
 }
 .code {
     padding-left: 15px;
-    width: 50%;
+    flex-grow: 1;
 }
 .pilwrap {
     position: relative;
@@ -97,9 +101,11 @@ h1 {
 }
 code {
     padding: 14px 15px 16px 0;
+    fo
 }
 pre, tt, code {
-    font-size: 12px; line-height: 18px;
+    font-size: 14px;
+    line-height: 18px;
     font-family: "Source Code Pro", Menlo, Monaco, Consolas, "Lucida Console", monospace;
     margin: 0; padding: 0;
 }
@@ -159,8 +165,8 @@ code[class*="language-"]::selection, code[class*="language-"] ::selection {
 
 /* Code blocks */
 pre[class*="language-"] {
-    padding: 1em;
-    margin: .5em 0;
+    padding: 0;
+    margin: 0;
     overflow: auto;
 }
 

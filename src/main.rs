@@ -1,6 +1,7 @@
 
 use clap::{Arg, App};
 use std::fs;
+use std::path::Path;
 
 use dadada::{Block, extract, build_html};
 
@@ -27,7 +28,9 @@ fn main() {
     let output = build_html(matches.values_of("input").expect("This is required")
         .map(|i| {
             let mut blocks = extract(i.to_string());
-            blocks.insert(0, Block::title(i));
+            let path = Path::new(i);
+            let title = path.file_name().expect("Must be a file").to_str().unwrap_or("");
+            blocks.insert(0, Block::new_file(title, i));
             blocks
         }).flatten()
     );
