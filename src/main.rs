@@ -79,10 +79,10 @@ pub fn build_html(blocks: Vec<Block>) -> String {
 // Entry point with CLI argument parsing.
 // A simple "input" and "output" path is sufficient.
 fn main() {
-    let matches = App::new("dada")
+    let matches = App::new("dadada")
         .version("0.0.1")
-        .author("Rui Vieira <ruidevieira@googlemail.com>")
-        .about("Rust artisan documentation.")
+        .author("Benjamin Kampmann <ben@gnunicorn.org>, Rui Vieira <ruidevieira@googlemail.com>")
+        .about("Artisanal Rust inlined code documentation renderer")
         .arg(Arg::with_name("input")
             .short("i")
             .long("input")
@@ -94,7 +94,8 @@ fn main() {
             .long("output")
             .value_name("FILE")
             .help("Output file")
-            .takes_value(true)).get_matches();
+            .takes_value(true))
+        .get_matches();
 
     if matches.is_present("input") {
         let input = matches.value_of("input").unwrap();

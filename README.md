@@ -1,11 +1,3 @@
-# dada
+# dadada - [by trio](https://www.youtube.com/watch?v=lNYcviXK4rg&app=desktop)
 
-Artisan Rust documentation (inspired by `docco`).
-
-Provide a input source file and an output destination for the document.
-
-```
-dada -i foo.rs -o foo.html
-```
-
-An example of `dada` running against its own source is available [here](https://ruivieira.gitlab.io/dada/).
+Artisanal Rust inlined code documentation renderer (fork of [`dada` by Rui Vieira](https://gitlab.com/ruivieira/dada); inspired by `docco`)

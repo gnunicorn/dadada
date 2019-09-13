@@ -1,16 +1,15 @@
 [package]
-name = "dada"
+name = "dadada"
 version = "0.0.1"
-authors = ["Rui  Vieira <ruidevieira@googlemail.com>"]
-description = "Artisan Rust documentation."
-homepage = "https://gitlab.com/ruivieira/dada"
-repository = "https://gitlab.com/ruivieira/dada"
+authors = ["Benjamin Kampmann <ben@gnunicorn.org", "Rui  Vieira <ruidevieira@googlemail.com>"]
+description = "Artisanal Rust inlined code documentation renderer"
+homepage = "https://github.com/gnunicorn/dadada"
+repository = "https://github.com/gnunicorn/dadada"
 readme = "README.md"
-keywords = ["cli", "documentation", "docco", "literate"]
+keywords = ["cli", "documentation", "dada", "docco", "literate"]
 categories = ["command-line-utilities"]
-license = "Apache-2.0"
-exclude = [".idea/**/*"]
+edition = "2018"
 
 
 [dependencies]
-clap = "2.32.0"
+clap = "2.33.0"
