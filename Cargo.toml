@@ -9,6 +9,7 @@ readme = "README.md"
 keywords = ["cli", "documentation", "dada", "docco", "literate"]
 categories = ["command-line-utilities"]
 edition = "2018"
+license = "MIT"
 
 [lib]
 name = "dadada"
