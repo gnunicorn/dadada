@@ -21,6 +21,14 @@ impl Block {
             code: Vec::new()
         }
     }
+
+    pub fn title(title: &str) -> Block {
+        return Block {
+            comment: vec![format!("#{:}", title)],
+            code: Vec::new()
+        }
+
+    }
 }
 
 // We divide the source code into code/comment blocks.
@@ -34,6 +42,15 @@ pub fn extract(path: String) -> Vec<Block> {
     for line in BufReader::new(file).lines() {
 
         let line_str = line.unwrap().to_string();
+        let stripped = line_str.trim();
+
+        // ignore empty lines. Just one big block.
+        if stripped.len() == 0 { 
+            if !process_as_code {
+                current_block.comment.push("\n".to_owned());
+            }
+            continue
+         }
 
         if line_str.trim().starts_with("//") {
             if process_as_code {
@@ -48,7 +65,16 @@ pub fn extract(path: String) -> Vec<Block> {
         if process_as_code {
             current_block.code.push(line_str.to_string());
         } else {
-            current_block.comment.push(line_str.replace("//", "").trim().to_string());
+            let line = line_str.split_at({
+                if line_str.starts_with("///")  || line_str.starts_with("//!") {
+                    3
+                } else if line_str.starts_with("// !") {
+                    4
+                } else {
+                    2
+                }
+            }).1;
+            current_block.comment.push(line.trim().to_string());
         }
     }
     blocks.push(current_block);
@@ -64,7 +90,7 @@ pub fn build_html<I: IntoIterator<Item=Block>>(blocks: I) -> String {
 
     for (i, block) in blocks.into_iter().enumerate() {
         block_str.push(format!(include_str!("block.html"), index=i,
-                               comment=block.comment.join("<br>\n"),
+                               comment=block.comment.join("\n"),
                                code=block.code.join("\n")));
     }
 

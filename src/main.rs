@@ -2,7 +2,7 @@
 use clap::{Arg, App};
 use std::fs;
 
-use dadada::{extract, build_html};
+use dadada::{Block, extract, build_html};
 
 fn main() {
     let matches = App::new("dadada")
@@ -25,8 +25,11 @@ fn main() {
         .get_matches();
 
     let output = build_html(matches.values_of("input").expect("This is required")
-        .map(|i| extract(i.to_string())
-        ).flatten()
+        .map(|i| {
+            let mut blocks = extract(i.to_string());
+            blocks.insert(0, Block::title(i));
+            blocks
+        }).flatten()
     );
 
     match matches.value_of("output") {
