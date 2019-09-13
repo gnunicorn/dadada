@@ -1,6 +1,6 @@
 [package]
 name = "dadada"
-version = "0.0.1"
+version = "0.9.0"
 authors = ["Benjamin Kampmann <ben@gnunicorn.org", "Rui  Vieira <ruidevieira@googlemail.com>"]
 description = "Artisanal Rust inlined code documentation renderer"
 homepage = "https://github.com/gnunicorn/dadada"
