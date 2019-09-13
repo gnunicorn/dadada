@@ -4,7 +4,8 @@ body {
     font-size: 15px;
     line-height: 22px;
     color: #252519;
-    margin: 0; padding: 0;
+    margin: 0; padding: 0;;
+    background: #f5f5ff;
 }
 a {
     color: #261a3b;
@@ -23,13 +24,6 @@ h1 {
 }
 #container {
     position: relative;
-}
-#background {
-    position: fixed;
-    top: 0; left: 525px; right: 0; bottom: 0;
-    background: #f5f5ff;
-    border-left: 1px solid #e5e5ee;
-    z-index: -1;
 }
 #jump_to, #jump_page {
     background: white;
@@ -67,28 +61,23 @@ h1 {
 }
 #jump_page .source:first-child {
 }
-table td {
-    border: 0;
-    outline: 0;
+#main {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: stretch;
+    padding: 0;
 }
-td.docs, th.docs {
-    max-width: 450px;
-    min-width: 450px;
-    min-height: 5px;
-    padding: 10px 25px 1px 50px;
-    overflow-x: hidden;
-    vertical-align: top;
-    text-align: left;
-}
-.docs pre {
-    margin: 15px 0 15px;
+.docs {
+    padding: 10px;
+    width: 640px;
+    border-right: 1px solid #e5e5ee;
     padding-left: 15px;
+    background: white;
 }
-.docs p tt, .docs p code {
-    background: #f8f8ff;
-    border: 1px solid #dedede;
-    font-size: 12px;
-    padding: 0 0.2em;
+.code {
+    padding-left: 15px;
+    width: 50%;
 }
 .pilwrap {
     position: relative;
@@ -103,19 +92,15 @@ td.docs, th.docs {
     opacity: 0;
     -webkit-transition: opacity 0.2s linear;
 }
-td.docs:hover .pilcrow {
+.docs:hover .pilcrow {
     opacity: 1;
 }
-td.code, th.code {
-    padding: 14px 15px 16px 25px;
-    width: 100%;
-    vertical-align: top;
-    background: #f5f5ff;
-    border-left: 1px solid #e5e5ee;
+code {
+    padding: 14px 15px 16px 0;
 }
 pre, tt, code {
     font-size: 12px; line-height: 18px;
-    font-family: Menlo, Monaco, Consolas, "Lucida Console", monospace;
+    font-family: "Source Code Pro", Menlo, Monaco, Consolas, "Lucida Console", monospace;
     margin: 0; padding: 0;
 }
 

@@ -21,3 +21,4 @@ path = "src/main.rs"
 
 [dependencies]
 clap = "2.33.0"
+pulldown-cmark = "0.5.3"

@@ -6,6 +6,7 @@ use std::thread::current;
 use std::fs;
 use std::path::Path;
 use std::iter::IntoIterator;
+use pulldown_cmark::{Parser, html};
 
 // `Block` stores code sections, consisting of comments and associated code.
 // We initialise a new block with empty `Vec` which will later be joined.
@@ -24,7 +25,7 @@ impl Block {
 
     pub fn title(title: &str) -> Block {
         return Block {
-            comment: vec![format!("#{:}", title)],
+            comment: vec![format!("---\nFile: `{:}`", title)],
             code: Vec::new()
         }
 
@@ -52,7 +53,7 @@ pub fn extract(path: String) -> Vec<Block> {
             continue
          }
 
-        if line_str.trim().starts_with("//") {
+        if stripped.starts_with("//") {
             if process_as_code {
                 blocks.push(current_block);
                 current_block = Block::new();
@@ -65,10 +66,10 @@ pub fn extract(path: String) -> Vec<Block> {
         if process_as_code {
             current_block.code.push(line_str.to_string());
         } else {
-            let line = line_str.split_at({
-                if line_str.starts_with("///")  || line_str.starts_with("//!") {
+            let line = stripped.split_at({
+                if stripped.starts_with("///")  || stripped.starts_with("//!") {
                     3
-                } else if line_str.starts_with("// !") {
+                } else if stripped.starts_with("// !") {
                     4
                 } else {
                     2
@@ -85,17 +86,16 @@ pub fn extract(path: String) -> Vec<Block> {
 // This function also inlines the CSS.
 pub fn build_html<I: IntoIterator<Item=Block>>(blocks: I) -> String {
     let css = include_str!("style.css").to_string();
-
-    let mut block_str = Vec::new();
+    let mut html_output = String::new();
 
     for (i, block) in blocks.into_iter().enumerate() {
-        block_str.push(format!(include_str!("block.html"), index=i,
-                               comment=block.comment.join("\n"),
-                               code=block.code.join("\n")));
+        html_output.push_str(&format!(include_str!("block_before.html"), index=i));
+        html::push_html(&mut html_output, Parser::new(&block.comment.join("\n")));
+        html_output.push_str(&format!(include_str!("block_after.html"), code=block.code.join("\n")));
     }
 
     return format!(include_str!("template.html"),
                        title="dada",
                        css=css,
-                       blocks=block_str.join("\n"));
+                       blocks=html_output);
 }
