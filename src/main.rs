@@ -32,6 +32,22 @@ fn main() {
             .help("target file to render to, stdout if not given")
             .takes_value(true))
 
+        .arg(Arg::with_name("extra_meta")
+            .long("meta")
+            .value_name("FILE")
+            .help("extra meta to include in html head")
+            .takes_value(true))
+        .arg(Arg::with_name("extra_header")
+            .long("header")
+            .value_name("FILE")
+            .help("extra html/markdown to include on top of html body")
+            .takes_value(true))
+        .arg(Arg::with_name("extra_footer")
+            .long("footer")
+            .value_name("FILE")
+            .help("extra html/markdown to include at the end of html body")
+            .takes_value(true))
+
         .arg(Arg::with_name("input")
             .value_name("FILE")
             .help("rust source files")
@@ -54,6 +70,9 @@ fn main() {
             title: matches.value_of("title").unwrap_or("").to_string(),
             with_css: !matches.is_present("no_css"),
             with_js: !matches.is_present("no_js"),
+            extra_meta: matches.value_of("extra_meta").map(|s| s.to_string()),
+            extra_header: matches.value_of("extra_header").map(|s| s.to_string()),
+            extra_footer: matches.value_of("extra_footer").map(|s| s.to_string()),  
         },
     );
 

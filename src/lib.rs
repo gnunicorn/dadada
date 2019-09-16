@@ -1,6 +1,7 @@
 
 use std::fs::File;
-use std::io::{BufRead, BufReader};
+use std::path::Path;
+use std::io::{BufRead, Read, BufReader};
 use std::iter::IntoIterator;
 use std::cmp::PartialEq;
 use pulldown_cmark::{Parser, html};
@@ -20,7 +21,13 @@ pub struct Options {
     /// Whether to include the static css
     pub with_css: bool,
     /// Whether to include the static javascript
-    pub with_js: bool
+    pub with_js: bool,
+    /// Filepath with extra for meta
+    pub extra_meta: Option<String>,
+    /// Filepath with extra for header
+    pub extra_header: Option<String>,
+    /// Filepath with extra for footer
+    pub extra_footer: Option<String>,
 }
 
 impl Block {
@@ -57,7 +64,7 @@ enum CommentType {
 // We divide the source code into code/comment blocks.
 // A `Vec` of `Block`s is returned for further processing.
 pub fn extract(path: String) -> Vec<Block> {
-    let file = File::open(path).expect("Unable to open the file");
+    let file = File::open(path).expect("Unable to open input file");
     let mut process_as_code = false;
     let mut current_comment_type : CommentType = CommentType::ANY;
     let mut blocks: Vec<Block> = Vec::new();
@@ -114,21 +121,51 @@ pub fn extract(path: String) -> Vec<Block> {
 pub fn build_html<I: IntoIterator<Item=Block>>(blocks: I, options: Options) -> String {
     let mut html_output = String::new();
 
-    let css = if options.with_css {
-        include_str!("static/style.css").to_string()
-    } else {
-        "".to_owned()
+    let include_static = |file : String, mut target: &mut String| {
+        let path = Path::new(&file);
+        let is_md = if let Some(ext) = path.extension() {
+            match ext.to_str() {
+                Some("md") | Some("mdown") | Some("markdown") => true,
+                _ => false
+            }
+        } else {
+            false
+        };
+
+        let mut f = File::open(path).expect("File not found");
+        if is_md {
+            let mut source = String::new();
+            f.read_to_string(&mut source).expect("failed  to read file");
+            html::push_html(&mut target, Parser::new(&source));
+        } else {
+            f.read_to_string(&mut target)
+                .expect("failed to read file");
+        };
     };
 
-    let js = if options.with_js {
-        format!("<script>{} {} {}</script>",
-            include_str!("static/prism.min.js"),
-            include_str!("static/prism-rust.min.js"),
-            include_str!("static/line-numbers.js"),
-        )
-    } else {
-        "".to_owned()
+    html_output.push_str(&format!(include_str!("static/head.html"), title=options.title));
+
+    if options.with_css {
+        html_output.push_str("<style>");
+        html_output.push_str(include_str!("static/style.css"));
+        html_output.push_str("</style>");
     };
+
+    if options.with_js {
+        html_output.push_str("<script>");
+        html_output.push_str(include_str!("static/prism.min.js"));
+        html_output.push_str(include_str!("static/prism-rust.min.js"));
+        html_output.push_str(include_str!("static/line-numbers.js"));
+        html_output.push_str("</script>");
+    };
+
+    options.extra_meta.map(|f| include_static(f, &mut html_output));
+
+    html_output.push_str("</head><body>");
+
+    options.extra_header.map(|f| include_static(f, &mut html_output));
+
+    html_output.push_str("<div id=\"container\"><div id=\"main\">");
 
     for (i, block) in blocks.into_iter().enumerate() {
         html_output.push_str(&format!(include_str!("static/block_before.html"), index=i));
@@ -143,9 +180,12 @@ pub fn build_html<I: IntoIterator<Item=Block>>(blocks: I, options: Options) -> S
         html_output.push_str(include_str!("static/block_after.html"));
     }
 
-    return format!(include_str!("static/template.html"),
-                       title=options.title,
-                       js=js,
-                       css=css,
-                       blocks=html_output);
+
+    html_output.push_str("</div></div>");
+
+    options.extra_footer.map(|f| include_static(f, &mut html_output));
+
+    html_output.push_str("</body></html>");
+    
+    return html_output;
 }

@@ -52,7 +52,6 @@ fn title_with_unicode_emoji() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-
 #[test]
 fn simple_run() -> Result<(), Box<dyn std::error::Error>> {
     let file = NamedTempFile::new()?;
@@ -70,6 +69,35 @@ fn simple_run() -> Result<(), Box<dyn std::error::Error>> {
 
     // we check against our local result
     assert!(diff(path, "tests/fixtures/minimal/regular.html"));
+
+    Ok(())
+}
+
+
+#[test]
+fn customised_run() -> Result<(), Box<dyn std::error::Error>> {
+    let file = NamedTempFile::new()?;
+    let path = file.path().to_str().unwrap().clone();
+    let mut cmd = Command::cargo_bin("dadada")?;
+    cmd
+        .current_dir("tests/fixtures/extra_content/")
+        .arg("--title")
+        .arg("Customised Example")
+        .arg("--output")
+        .arg(path)
+        // here follow our cutom inject
+        .arg("--meta")
+        .arg("meta.html")
+        .arg("--header")
+        .arg("header.html")
+        .arg("--footer")
+        .arg("footer.md")
+        .arg("lib.rs");
+    cmd.assert()
+        .success();
+
+    // we check against our local result
+    assert!(diff(path, "tests/fixtures/extra_content/expected.html"));
 
     Ok(())
 }
