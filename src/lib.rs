@@ -34,10 +34,15 @@ impl Block {
 
     pub fn new_file(title: &str, path: &str) -> Block {
         return Block {
-            comment: vec![format!("`{:}` **`{:}`**", path, title)],
+            comment: vec![format!("**`{:}`** (in `{:}`)", title, path)],
             code: vec![],
             starting_line: 0,
         }
+    }
+
+    pub fn has_code(&self) -> bool {
+        if self.code.len() == 0 { return false }
+        self.code.iter().find(|i| i.trim().len() > 0).is_some()
     }
 }
 
@@ -127,9 +132,15 @@ pub fn build_html<I: IntoIterator<Item=Block>>(blocks: I, options: Options) -> S
 
     for (i, block) in blocks.into_iter().enumerate() {
         html_output.push_str(&format!(include_str!("static/block_before.html"), index=i));
+
         html::push_html(&mut html_output, Parser::new(&block.comment.join("\n")));
-        html_output.push_str(&format!(include_str!("static/block_after.html"),
-            code=block.code.join("\n").replace("<", "&lt;"), start=block.starting_line));
+
+        if block.has_code() {
+            html_output.push_str(&format!(include_str!("static/block_code.html"),
+                code=block.code.join("\n").replace("<", "&lt;"), start=block.starting_line));
+        }
+
+        html_output.push_str(include_str!("static/block_after.html"));
     }
 
     return format!(include_str!("static/template.html"),

@@ -1,7 +1,7 @@
 /*--------------------- Layout and Typography ----------------------------*/
 body {
     font-family: 'Source Serif Pro', 'Book Antiqua', Palatino, FreeSerif, serif;
-    font-size: 15px;
+    font-size: 10px;
     line-height: 22px;
     color: #252519;
     margin: 0; padding: 0;;
@@ -74,14 +74,12 @@ h1 {
     align-items: stretch;
 }
 .docs {
-    width: 640px;
     border-right: 1px solid #e5e5ee;
     padding: 5px 25px 0;
     background: white;
 }
 .code {
     padding: 5px 15px 0;
-    flex-grow: 1;
 }
 
 .block:hover .docs, .block:hover .code{
@@ -294,4 +292,113 @@ pre[class*="language-"] {
 
 .token.entity {
     cursor: help;
+}
+
+
+/* Floating and sizes */
+
+/* Custom, iPhone Retina */ 
+@media only screen and (max-width : 959px) {
+
+    body {
+        font-size: 15px;
+        line-height: 22px;
+    }
+
+    pre, tt, code {
+        font-size: 14px;
+        line-height: 18px;
+    }
+    
+    .block {
+        flex-direction: column;
+    }
+
+    .block .docs {
+        padding-top: 25px; 
+    }
+
+    .block .docs p:last-child {
+        margin-bottom: 5px; 
+    }
+
+    .code  {
+        padding-left: 0;
+    }
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (min-width : 960px) {
+
+    
+    body {
+        font-size: 14px;
+        line-height: 22px;
+    }
+
+    pre, tt, code {
+        font-size: 12px;
+        line-height: 16px;
+    }
+
+    .docs {
+        width: 300px;
+    }
+    
+    .docs:last-child {
+        flex-grow: 1;
+    }
+
+    .code {
+        flex-grow: 1;
+        width: calc(100vw - 550px);
+    }
+
+}
+
+/* Large Devices, Wide Screens */
+@media only screen and (min-width : 1200px) {
+    
+    body {
+        font-size: 15px;
+        line-height: 22px;
+    }
+
+    pre, tt, code {
+        font-size: 14px;
+        line-height: 18px;
+    }
+
+    .docs {
+        width: 500px;
+    }
+
+    .code {
+        flex-grow: 1;
+        width: calc(100vw - 600px);
+    }
+}
+
+
+/* Large Devices, Wide Screens */
+@media only screen and (min-width : 1400px) {
+    
+    body {
+        font-size: 15px;
+        line-height: 22px;
+    }
+
+    pre, tt, code {
+        font-size: 14px;
+        line-height: 18px;
+    }
+
+    .docs {
+        width: 600px;
+    }
+
+    .code {
+        flex-grow: 1;
+        width: 700px;
+    }
 }
