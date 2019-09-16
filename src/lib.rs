@@ -124,7 +124,8 @@ pub fn build_html<I: IntoIterator<Item=Block>>(blocks: I, options: Options) -> S
     for (i, block) in blocks.into_iter().enumerate() {
         html_output.push_str(&format!(include_str!("static/block_before.html"), index=i));
         html::push_html(&mut html_output, Parser::new(&block.comment.join("\n")));
-        html_output.push_str(&format!(include_str!("static/block_after.html"), code=block.code.join("\n").replace("<", "&lt;")));
+        html_output.push_str(&format!(include_str!("static/block_after.html"),
+            code=block.code.join("\n").replace("<", "&lt;")));
     }
 
     return format!(include_str!("static/template.html"),

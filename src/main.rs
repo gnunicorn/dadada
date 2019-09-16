@@ -7,7 +7,7 @@ use dadada::{Block, Options, extract, build_html};
 
 fn main() {
     let matches = App::new("dadada")
-        .version("0.9.2")
+        .version("0.9.3-dev")
         .author("Benjamin Kampmann <ben@gnunicorn.org>, Rui Vieira <ruidevieira@googlemail.com>")
         .about("Artisanal Rust inlined code documentation renderer")
 
