@@ -12,6 +12,11 @@ pub struct Block {
     code: Vec<String>
 }
 
+pub struct Options {
+    pub title: String,
+    pub with_css: bool,
+}
+
 impl Block {
     pub fn new() -> Block {
         return Block {
@@ -93,9 +98,14 @@ pub fn extract(path: String) -> Vec<Block> {
 
 // Build a full HTML document from a vector of blocks.
 // This function also inlines the CSS.
-pub fn build_html<I: IntoIterator<Item=Block>>(blocks: I) -> String {
-    let css = include_str!("style.css").to_string();
+pub fn build_html<I: IntoIterator<Item=Block>>(blocks: I, options: Options) -> String {
     let mut html_output = String::new();
+
+    let css = if options.with_css {
+        include_str!("style.css").to_string()
+    } else {
+        "".to_owned()
+    };
 
     for (i, block) in blocks.into_iter().enumerate() {
         html_output.push_str(&format!(include_str!("block_before.html"), index=i));
@@ -104,7 +114,7 @@ pub fn build_html<I: IntoIterator<Item=Block>>(blocks: I) -> String {
     }
 
     return format!(include_str!("template.html"),
-                       title="dada",
+                       title=options.title,
                        css=css,
                        blocks=html_output);
 }
