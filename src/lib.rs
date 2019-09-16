@@ -12,9 +12,14 @@ pub struct Block {
     code: Vec<String>
 }
 
+/// Rendering Options
 pub struct Options {
+    /// HTML title to include
     pub title: String,
+    /// Whether to include the static css
     pub with_css: bool,
+    /// Whether to include the static javascript
+    pub with_js: bool
 }
 
 impl Block {
@@ -107,6 +112,15 @@ pub fn build_html<I: IntoIterator<Item=Block>>(blocks: I, options: Options) -> S
         "".to_owned()
     };
 
+    let js = if options.with_js {
+        format!("<script>{}</script><script>{}</script>",
+            include_str!("static/prism.min.js"),
+            include_str!("static/prism-rust.min.js"),
+        )
+    } else {
+        "".to_owned()
+    };
+
     for (i, block) in blocks.into_iter().enumerate() {
         html_output.push_str(&format!(include_str!("block_before.html"), index=i));
         html::push_html(&mut html_output, Parser::new(&block.comment.join("\n")));
@@ -115,6 +129,7 @@ pub fn build_html<I: IntoIterator<Item=Block>>(blocks: I, options: Options) -> S
 
     return format!(include_str!("template.html"),
                        title=options.title,
+                       js=js,
                        css=css,
                        blocks=html_output);
 }

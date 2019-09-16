@@ -17,6 +17,14 @@ fn main() {
             .value_name("String")
             .help("The HTML title to render")
             .takes_value(true))
+        .arg(Arg::with_name("no_css")
+            .long("no-css")
+            .required(false)
+            .help("Do not add CSS to output"))
+        .arg(Arg::with_name("no_js")
+            .long("no-js")
+            .required(false)
+            .help("Do not add Javascript to output"))
         .arg(Arg::with_name("output")
             .short("o")
             .long("output")
@@ -43,7 +51,8 @@ fn main() {
             }).flatten(),
         Options {
             title: matches.value_of("title").unwrap_or("").to_string(),
-            with_css: true,
+            with_css: !matches.is_present("no_css"),
+            with_js: !matches.is_present("no_js"),
         },
     );
 
