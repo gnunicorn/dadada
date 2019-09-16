@@ -23,3 +23,9 @@ path = "src/main.rs"
 [dependencies]
 clap = "2.33.0"
 pulldown-cmark = "0.5.3"
+
+[dev-dependencies]
+tempfile = "3.1"
+file_diff = "1.0.0"
+assert_cmd = "0.10"
+predicates = "1"
