@@ -1,5 +1,7 @@
 # dadada - [by trio](https://www.youtube.com/watch?v=lNYcviXK4rg&app=desktop)
 
+![Crates.io](https://img.shields.io/crates/v/dadada?style=flat-square)![License: MIT](https://img.shields.io/crates/l/dadada?style=flat-square)![GitHub last commit](https://img.shields.io/github/last-commit/gnunicorn/dadada?style=flat-square)![Travis (.org)](https://img.shields.io/travis/gnunicorn/dadada?style=flat-square)
+
 Artisanal Rust inlined code documentation renderer (forked off from [`dada` by Rui Vieira](https://gitlab.com/ruivieira/dada); inspired by `docco`)
 
 **Here Screenshot** / Action video

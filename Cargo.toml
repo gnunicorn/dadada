@@ -20,6 +20,10 @@ name = "dadada"
 path = "src/main.rs"
 
 
+[badges]
+travis-ci = { repository = "gnunicorn/dadada" }
+maintenance = { status = "actively-developed" }
+
 [dependencies]
 clap = "2.33.0"
 pulldown-cmark = "0.5.3"
