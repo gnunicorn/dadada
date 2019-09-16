@@ -8,8 +8,8 @@ _[Help wanted](https://github.com/gnunicorn/dadada/labels/help%20wanted)_!
 
  - [ ] [Improve Readme](https://github.com/gnunicorn/dadada/issues/2)
  - [ ] [Make html mobile-friendly / responsive](https://github.com/gnunicorn/dadada/issues/1)
- - [ ] [Remove remote includes from html](https://github.com/gnunicorn/dadada/issues/8)
- - [ ] [Add `--title`-CLI paramter](https://github.com/gnunicorn/dadada/issues/3) to add title
+ - [x] [Remove remote includes from html](https://github.com/gnunicorn/dadada/issues/8)
+ - [x] [Add `--title`-CLI parameter](https://github.com/gnunicorn/dadada/issues/3) to add title
  - [ ] additional [`--meta`, `--header`  and `--footer` parameters](https://github.com/gnunicorn/dadada/issues/4) to allow for easy customisation
  - [ ] [`travis.yml` example](https://github.com/gnunicorn/dadada/issues/6) to build on push
  - [ ] [`build.rs` script-example](https://github.com/gnunicorn/dadada/issues/5) to automagically build all examples of a crate

@@ -107,7 +107,7 @@ pub fn build_html<I: IntoIterator<Item=Block>>(blocks: I, options: Options) -> S
     let mut html_output = String::new();
 
     let css = if options.with_css {
-        include_str!("style.css").to_string()
+        include_str!("static/style.css").to_string()
     } else {
         "".to_owned()
     };
@@ -122,12 +122,12 @@ pub fn build_html<I: IntoIterator<Item=Block>>(blocks: I, options: Options) -> S
     };
 
     for (i, block) in blocks.into_iter().enumerate() {
-        html_output.push_str(&format!(include_str!("block_before.html"), index=i));
+        html_output.push_str(&format!(include_str!("static/block_before.html"), index=i));
         html::push_html(&mut html_output, Parser::new(&block.comment.join("\n")));
-        html_output.push_str(&format!(include_str!("block_after.html"), code=block.code.join("\n").replace("<", "&lt;")));
+        html_output.push_str(&format!(include_str!("static/block_after.html"), code=block.code.join("\n").replace("<", "&lt;")));
     }
 
-    return format!(include_str!("template.html"),
+    return format!(include_str!("static/template.html"),
                        title=options.title,
                        js=js,
                        css=css,
