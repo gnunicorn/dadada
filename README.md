@@ -2,6 +2,40 @@
 
 Artisanal Rust inlined code documentation renderer (forked off from [`dada` by Rui Vieira](https://gitlab.com/ruivieira/dada); inspired by `docco`)
 
+**Here Screenshot** / Action video
+
+## Install
+
+You can install it quite easily with `cargo install dadada`.
+
+## Usage
+
+`dadada` will be installed as command line tool for you to run. Just specify the files you want to have rendered and it will do so. If you do not provide a target output file (`--output` / `-o`) the result will be printed to stdout.
+
+The full list of cli arguments is:
+```
+Benjamin Kampmann <ben@gnunicorn.org>, Rui Vieira <ruidevieira@googlemail.com>
+Artisanal Rust inlined code documentation renderer
+
+USAGE:
+    dadada [FLAGS] [OPTIONS] <FILE>...
+
+FLAGS:
+    -h, --help       Prints help information
+        --no-css     Do not add CSS to output
+        --no-js      Do not add Javascript to output
+    -V, --version    Prints version information
+
+OPTIONS:
+    -o, --output <FILE>     target file to render to, stdout if not given
+    -t, --title <String>    The HTML title to render
+
+ARGS:
+    <FILE>...    rust source files
+```
+
+An example to render all the rust files in your crate under `target/dadada-output.html` therefor would be: `dadada --title "All my Code Example" -o target/dadada-output.html src/*.rs`.
+
 
 ## ToDo's [towards 1.0](https://github.com/gnunicorn/dadada/milestone/1)
 _[Help wanted](https://github.com/gnunicorn/dadada/labels/help%20wanted)_!
