@@ -9,7 +9,8 @@ use pulldown_cmark::{Parser, html};
 // We initialise a new block with empty `Vec` which will later be joined.
 pub struct Block {
     comment: Vec<String>,
-    code: Vec<String>
+    code: Vec<String>,
+    starting_line: usize,
 }
 
 /// Rendering Options
@@ -23,17 +24,19 @@ pub struct Options {
 }
 
 impl Block {
-    pub fn new() -> Block {
+    pub fn new(starting_line: usize) -> Block {
         return Block {
             comment: Vec::new(),
-            code: Vec::new()
+            code: Vec::new(),
+            starting_line,
         }
     }
 
-    pub fn new_file(title: &str, filename: &str) -> Block {
+    pub fn new_file(title: &str, path: &str) -> Block {
         return Block {
-            comment: vec![format!("## `{:}`", title)],
-            code: vec![format!("// File: {:}", filename)]
+            comment: vec![format!("`{:}` **`{:}`**", path, title)],
+            code: vec![],
+            starting_line: 0,
         }
     }
 }
@@ -53,9 +56,9 @@ pub fn extract(path: String) -> Vec<Block> {
     let mut process_as_code = false;
     let mut current_comment_type : CommentType = CommentType::ANY;
     let mut blocks: Vec<Block> = Vec::new();
-    let mut current_block = Block::new();
+    let mut current_block = Block::new(1);
 
-    for line in BufReader::new(file).lines() {
+    for (idx, line) in BufReader::new(file).lines().into_iter().enumerate() {
 
         let line_str = line.unwrap().to_string();
         let stripped = line_str.trim();
@@ -63,7 +66,7 @@ pub fn extract(path: String) -> Vec<Block> {
         if stripped.starts_with("//") {
             if process_as_code {
                 blocks.push(current_block);
-                current_block = Block::new();
+                current_block = Block::new(idx + 1);
             }
             process_as_code = false;
         } else {
@@ -91,7 +94,7 @@ pub fn extract(path: String) -> Vec<Block> {
                     com_type != current_comment_type {
                 // different type of comment, means we assume a new block
                 blocks.push(current_block);
-                current_block = Block::new();
+                current_block = Block::new(idx + 1);
             }
             current_comment_type = com_type;
             current_block.comment.push(line.trim().to_string());
@@ -113,9 +116,10 @@ pub fn build_html<I: IntoIterator<Item=Block>>(blocks: I, options: Options) -> S
     };
 
     let js = if options.with_js {
-        format!("<script>{}</script><script>{}</script>",
+        format!("<script>{} {} {}</script>",
             include_str!("static/prism.min.js"),
             include_str!("static/prism-rust.min.js"),
+            include_str!("static/line-numbers.js"),
         )
     } else {
         "".to_owned()
@@ -125,7 +129,7 @@ pub fn build_html<I: IntoIterator<Item=Block>>(blocks: I, options: Options) -> S
         html_output.push_str(&format!(include_str!("static/block_before.html"), index=i));
         html::push_html(&mut html_output, Parser::new(&block.comment.join("\n")));
         html_output.push_str(&format!(include_str!("static/block_after.html"),
-            code=block.code.join("\n").replace("<", "&lt;")));
+            code=block.code.join("\n").replace("<", "&lt;"), start=block.starting_line));
     }
 
     return format!(include_str!("static/template.html"),

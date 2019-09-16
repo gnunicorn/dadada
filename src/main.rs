@@ -46,7 +46,8 @@ fn main() {
                 let mut blocks = extract(i.to_string());
                 let path = Path::new(i);
                 let title = path.file_name().expect("Must be a file").to_str().unwrap_or("");
-                blocks.insert(0, Block::new_file(title, i));
+                let dir = path.parent().map(|i| i.to_str().unwrap_or("")).unwrap_or("");
+                blocks.insert(0, Block::new_file(title, dir));
                 blocks
             }).flatten(),
         Options {

@@ -61,6 +61,7 @@ h1 {
 }
 #jump_page .source:first-child {
 }
+
 #main {
     padding: 0;
     display: flex;
@@ -71,18 +72,22 @@ h1 {
     flex-direction: row;
     flex-wrap: wrap;
     align-items: stretch;
-
 }
 .docs {
     width: 640px;
     border-right: 1px solid #e5e5ee;
-    padding: 0 25px;
+    padding: 5px 25px 0;
     background: white;
 }
 .code {
-    padding-left: 15px;
+    padding: 5px 15px 0;
     flex-grow: 1;
 }
+
+.block:hover .docs, .block:hover .code{
+    background: #fffbdd;
+}
+
 .pilwrap {
     position: relative;
 }
@@ -122,8 +127,7 @@ span.lineno { background-color: #f0f0f0; padding: 0 5px 0 5px; }
 
 /*Theme*/
 
-code[class*="language-"],
-pre[class*="language-"] {
+code[class*="language-"]{
     color: black;
     background: none;
     text-shadow: 0 1px white;
@@ -155,6 +159,46 @@ code[class*="language-"]::selection, code[class*="language-"] ::selection {
     text-shadow: none;
 }
 
+pre[class*="language-"].line-numbers {
+	position: relative;
+	padding-left: 3.8em;
+	counter-reset: linenumber;
+}
+
+pre[class*="language-"].line-numbers > code {
+	position: relative;
+	white-space: inherit;
+}
+
+.line-numbers .line-numbers-rows {
+	position: absolute;
+	pointer-events: none;
+	top: 0;
+    left: -3.8em;
+	width: 4em; /* works for line-numbers below 1000 lines */
+	letter-spacing: -1px;
+
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+
+}
+
+	.line-numbers-rows > span {
+		pointer-events: none;
+		display: block;
+		counter-increment: linenumber;
+	}
+
+		.line-numbers-rows > span:before {
+			content: counter(linenumber);
+			color: #999;
+			display: block;
+			padding-right: 0.8em;
+			text-align: right;
+		}
+
 @media print {
     code[class*="language-"],
     pre[class*="language-"] {
@@ -166,7 +210,8 @@ code[class*="language-"]::selection, code[class*="language-"] ::selection {
 pre[class*="language-"] {
     padding: 0;
     margin: 0;
-    overflow: auto;
+    overflow-x: auto;
+    overflow-y: hidden;
 }
 
 :not(pre) > code[class*="language-"],
