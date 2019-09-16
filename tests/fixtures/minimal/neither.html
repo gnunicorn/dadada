@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Minimal Example</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <style></style>
+</head>
+<body class="line-numbers">
+<div id="container">
+    <div id="main">
+        <div class="block">
+    <div id="section-0" class="docs">
+        <div class="pilwrap">
+            <a class="pilcrow" href="#section-0">&#182;</a>
+        </div><p><strong><code>lib.rs</code></strong> (in ``)</p>
+    </div>
+</div><div class="block">
+    <div id="section-1" class="docs">
+        <div class="pilwrap">
+            <a class="pilcrow" href="#section-1">&#182;</a>
+        </div><h2>Minimal example file</h2>
+<p>With an introduction header</p>
+    </div>
+</div><div class="block">
+    <div id="section-2" class="docs">
+        <div class="pilwrap">
+            <a class="pilcrow" href="#section-2">&#182;</a>
+        </div><p>some imports</p>
+    </div>
+    <div class="code">
+<pre data-start="5"><code class="language-rust line-numbers">use std::fs::File;
+use std::io::{BufRead, BufReader};
+use std::iter::IntoIterator;
+use std::cmp::PartialEq;
+use pulldown_cmark::{Parser, html};
+</code></pre>
+    </div>
+</div><div class="block">
+    <div id="section-3" class="docs">
+        <div class="pilwrap">
+            <a class="pilcrow" href="#section-3">&#182;</a>
+        </div><p>Some struct definition
+<code>Block</code> stores code sections, consisting of comments and associated code.
+We initialise a new block with empty <code>Vec</code> which will later be joined.</p>
+    </div>
+    <div class="code">
+<pre data-start="12"><code class="language-rust line-numbers">pub struct Block {
+    comment: Vec&lt;String>,
+    code: Vec&lt;String>,</code></pre>
+    </div>
+</div><div class="block">
+    <div id="section-4" class="docs">
+        <div class="pilwrap">
+            <a class="pilcrow" href="#section-4">&#182;</a>
+        </div><p>With a doc comment</p>
+    </div>
+    <div class="code">
+<pre data-start="18"><code class="language-rust line-numbers">    starting_line: usize,
+}
+</code></pre>
+    </div>
+</div><div class="block">
+    <div id="section-5" class="docs">
+        <div class="pilwrap">
+            <a class="pilcrow" href="#section-5">&#182;</a>
+        </div><p>and a a main function, with doc comment</p>
+    </div>
+    <div class="code">
+<pre data-start="22"><code class="language-rust line-numbers">pub fn main() {</code></pre>
+    </div>
+</div><div class="block">
+    <div id="section-6" class="docs">
+        <div class="pilwrap">
+            <a class="pilcrow" href="#section-6">&#182;</a>
+        </div><p>As this is only for tests</p>
+    </div>
+    <div class="code">
+<pre data-start="24"><code class="language-rust line-numbers">    for i in ..100 {</code></pre>
+    </div>
+</div><div class="block">
+    <div id="section-7" class="docs">
+        <div class="pilwrap">
+            <a class="pilcrow" href="#section-7">&#182;</a>
+        </div><p>We do not mind, that this isn't actually doing anything</p>
+    </div>
+    <div class="code">
+<pre data-start="27"><code class="language-rust line-numbers">    }
+}</code></pre>
+    </div>
+</div>
+    </div>
+</div>
+</body>
+</html>

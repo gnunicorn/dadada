@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Minimal Example</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <style>/*--------------------- Layout and Typography ----------------------------*/
+body {
+    font-family: 'Source Serif Pro', 'Book Antiqua', Palatino, FreeSerif, serif;
+    font-size: 10px;
+    line-height: 22px;
+    color: #252519;
+    margin: 0; padding: 0;;
+    background: #f5f5ff;
+}
+a {
+    color: #261a3b;
+}
+a:visited {
+    color: #261a3b;
+}
+p {
+    margin: 0 0 15px 0;
+}
+h1, h2, h3, h4, h5, h6 {
+    margin: 0px 0 15px 0;
+}
+h1 {
+    margin-top: 40px;
+}
+#container {
+    position: relative;
+}
+#jump_to, #jump_page {
+    background: white;
+    -webkit-box-shadow: 0 0 25px #777; -moz-box-shadow: 0 0 25px #777;
+    -webkit-border-bottom-left-radius: 5px; -moz-border-radius-bottomleft: 5px;
+    font: 10px Arial;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-align: right;
+}
+#jump_to, #jump_wrapper {
+    position: fixed;
+    right: 0; top: 0;
+    padding: 5px 10px;
+}
+#jump_wrapper {
+    padding: 0;
+    display: none;
+}
+#jump_to:hover #jump_wrapper {
+    display: block;
+}
+#jump_page {
+    padding: 5px 0 3px;
+    margin: 0 0 25px 25px;
+}
+#jump_page .source {
+    display: block;
+    padding: 5px 10px;
+    text-decoration: none;
+    border-top: 1px solid #eee;
+}
+#jump_page .source:hover {
+    background: #f5f5ff;
+}
+#jump_page .source:first-child {
+}
+
+#main {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+.block  {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: stretch;
+}
+.docs {
+    border-right: 1px solid #e5e5ee;
+    padding: 5px 25px 0;
+    background: white;
+}
+.code {
+    padding: 5px 15px 0;
+}
+
+.block:hover .docs, .block:hover .code{
+    background: #fffbdd;
+}
+
+.pilwrap {
+    position: relative;
+}
+.pilcrow {
+    font: 12px Arial;
+    text-decoration: none;
+    color: #454545;
+    position: absolute;
+    top: 3px; left: -20px;
+    padding: 1px 2px;
+    opacity: 0;
+    -webkit-transition: opacity 0.2s linear;
+}
+.docs:hover .pilcrow {
+    opacity: 1;
+}
+code {
+    padding: 14px 15px 16px 0;
+}
+pre, tt, code {
+    font-size: 14px;
+    line-height: 18px;
+    font-family: "Source Code Pro", Menlo, Monaco, Consolas, "Lucida Console", monospace;
+    margin: 0; padding: 0;
+}
+
+
+/*---------------------- Syntax Highlighting -----------------------------*/
+td.linenos { background-color: #f0f0f0; padding-right: 10px; }
+span.lineno { background-color: #f0f0f0; padding: 0 5px 0 5px; }
+
+/**
+ * prism.js default theme for JavaScript, CSS and HTML
+ * Based on dabblet (http://dabblet.com)
+ * @author Lea Verou
+ */
+
+/*Theme*/
+
+code[class*="language-"]{
+    color: black;
+    background: none;
+    text-shadow: 0 1px white;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+}
+
+pre[class*="language-"]::-moz-selection, pre[class*="language-"] ::-moz-selection,
+code[class*="language-"]::-moz-selection, code[class*="language-"] ::-moz-selection {
+    text-shadow: none;
+}
+
+pre[class*="language-"]::selection, pre[class*="language-"] ::selection,
+code[class*="language-"]::selection, code[class*="language-"] ::selection {
+    text-shadow: none;
+}
+
+pre[class*="language-"].line-numbers {
+	position: relative;
+	padding-left: 3.8em;
+	counter-reset: linenumber;
+}
+
+pre[class*="language-"].line-numbers > code {
+	position: relative;
+	white-space: inherit;
+}
+
+.line-numbers .line-numbers-rows {
+	position: absolute;
+	pointer-events: none;
+	top: 0;
+    left: -3.8em;
+	width: 4em; /* works for line-numbers below 1000 lines */
+	letter-spacing: -1px;
+
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+
+}
+
+	.line-numbers-rows > span {
+		pointer-events: none;
+		display: block;
+		counter-increment: linenumber;
+	}
+
+		.line-numbers-rows > span:before {
+			content: counter(linenumber);
+			color: #999;
+			display: block;
+			padding-right: 0.8em;
+			text-align: right;
+		}
+
+@media print {
+    code[class*="language-"],
+    pre[class*="language-"] {
+        text-shadow: none;
+    }
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+    padding: 0;
+    margin: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] {
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+    padding: .1em;
+    border-radius: .3em;
+    white-space: normal;
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+    color: slategray;
+}
+
+.token.punctuation {
+    color: #999;
+}
+
+.namespace {
+    opacity: .7;
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol,
+.token.deleted {
+    color: #905;
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+    color: #690;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+    color: #9a6e3a;
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+    color: #07a;
+}
+
+.token.function,
+.token.class-name {
+    color: #DD4A68;
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+    color: #e90;
+}
+
+.token.important,
+.token.bold {
+    font-weight: bold;
+}
+.token.italic {
+    font-style: italic;
+}
+
+.token.entity {
+    cursor: help;
+}
+
+
+/* Floating and sizes */
+
+/* Custom, iPhone Retina */ 
+@media only screen and (max-width : 959px) {
+
+    body {
+        font-size: 15px;
+        line-height: 22px;
+    }
+
+    pre, tt, code {
+        font-size: 14px;
+        line-height: 18px;
+    }
+    
+    .block {
+        flex-direction: column;
+    }
+
+    .block .docs {
+        padding-top: 25px; 
+    }
+
+    .block .docs p:last-child {
+        margin-bottom: 5px; 
+    }
+
+    .code  {
+        padding-left: 0;
+    }
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (min-width : 960px) {
+
+    
+    body {
+        font-size: 14px;
+        line-height: 22px;
+    }
+
+    pre, tt, code {
+        font-size: 12px;
+        line-height: 16px;
+    }
+
+    .docs {
+        width: 300px;
+    }
+    
+    .docs:last-child {
+        flex-grow: 1;
+    }
+
+    .code {
+        flex-grow: 1;
+        width: calc(100vw - 550px);
+    }
+
+}
+
+/* Large Devices, Wide Screens */
+@media only screen and (min-width : 1200px) {
+    
+    body {
+        font-size: 15px;
+        line-height: 22px;
+    }
+
+    pre, tt, code {
+        font-size: 14px;
+        line-height: 18px;
+    }
+
+    .docs {
+        width: 500px;
+    }
+
+    .code {
+        flex-grow: 1;
+        width: calc(100vw - 600px);
+    }
+}
+
+
+/* Large Devices, Wide Screens */
+@media only screen and (min-width : 1400px) {
+    
+    body {
+        font-size: 15px;
+        line-height: 22px;
+    }
+
+    pre, tt, code {
+        font-size: 14px;
+        line-height: 18px;
+    }
+
+    .docs {
+        width: 600px;
+    }
+
+    .code {
+        flex-grow: 1;
+        width: 700px;
+    }
+}
+</style>
+</head>
+<body class="line-numbers">
+<div id="container">
+    <div id="main">
+        <div class="block">
+    <div id="section-0" class="docs">
+        <div class="pilwrap">
+            <a class="pilcrow" href="#section-0">&#182;</a>
+        </div><p><strong><code>lib.rs</code></strong> (in ``)</p>
+    </div>
+</div><div class="block">
+    <div id="section-1" class="docs">
+        <div class="pilwrap">
+            <a class="pilcrow" href="#section-1">&#182;</a>
+        </div><h2>Minimal example file</h2>
+<p>With an introduction header</p>
+    </div>
+</div><div class="block">
+    <div id="section-2" class="docs">
+        <div class="pilwrap">
+            <a class="pilcrow" href="#section-2">&#182;</a>
+        </div><p>some imports</p>
+    </div>
+    <div class="code">
+<pre data-start="5"><code class="language-rust line-numbers">use std::fs::File;
+use std::io::{BufRead, BufReader};
+use std::iter::IntoIterator;
+use std::cmp::PartialEq;
+use pulldown_cmark::{Parser, html};
+</code></pre>
+    </div>
+</div><div class="block">
+    <div id="section-3" class="docs">
+        <div class="pilwrap">
+            <a class="pilcrow" href="#section-3">&#182;</a>
+        </div><p>Some struct definition
+<code>Block</code> stores code sections, consisting of comments and associated code.
+We initialise a new block with empty <code>Vec</code> which will later be joined.</p>
+    </div>
+    <div class="code">
+<pre data-start="12"><code class="language-rust line-numbers">pub struct Block {
+    comment: Vec&lt;String>,
+    code: Vec&lt;String>,</code></pre>
+    </div>
+</div><div class="block">
+    <div id="section-4" class="docs">
+        <div class="pilwrap">
+            <a class="pilcrow" href="#section-4">&#182;</a>
+        </div><p>With a doc comment</p>
+    </div>
+    <div class="code">
+<pre data-start="18"><code class="language-rust line-numbers">    starting_line: usize,
+}
+</code></pre>
+    </div>
+</div><div class="block">
+    <div id="section-5" class="docs">
+        <div class="pilwrap">
+            <a class="pilcrow" href="#section-5">&#182;</a>
+        </div><p>and a a main function, with doc comment</p>
+    </div>
+    <div class="code">
+<pre data-start="22"><code class="language-rust line-numbers">pub fn main() {</code></pre>
+    </div>
+</div><div class="block">
+    <div id="section-6" class="docs">
+        <div class="pilwrap">
+            <a class="pilcrow" href="#section-6">&#182;</a>
+        </div><p>As this is only for tests</p>
+    </div>
+    <div class="code">
+<pre data-start="24"><code class="language-rust line-numbers">    for i in ..100 {</code></pre>
+    </div>
+</div><div class="block">
+    <div id="section-7" class="docs">
+        <div class="pilwrap">
+            <a class="pilcrow" href="#section-7">&#182;</a>
+        </div><p>We do not mind, that this isn't actually doing anything</p>
+    </div>
+    <div class="code">
+<pre data-start="27"><code class="language-rust line-numbers">    }
+}</code></pre>
+    </div>
+</div>
+    </div>
+</div>
+</body>
+</html>
