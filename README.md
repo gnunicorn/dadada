@@ -45,7 +45,7 @@ An example to render all the rust files in your crate under `target/dadada-outpu
 
 ### _[Contributors wanted](https://github.com/gnunicorn/dadada/labels/help%20wanted)_!
 
-- [-][improve readme](https://github.com/gnunicorn/dadada/issues/2)
+- [-] [Improve Readme](https://github.com/gnunicorn/dadada/issues/2)
 - [x] [Make html mobile-friendly / responsive](https://github.com/gnunicorn/dadada/issues/1)
 - [x] [Remove remote includes from html](https://github.com/gnunicorn/dadada/issues/8)
 - [x] [Add `--title`-CLI parameter](https://github.com/gnunicorn/dadada/issues/3) to add title
