@@ -4,7 +4,7 @@
 
 Artisanal Rust inlined code documentation renderer
 
-**Here Screenshot** / Action video
+![screenshot](./Screenshot.jpg)
 
 ## Installation
 
