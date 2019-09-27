@@ -1,10 +1,9 @@
-
-use std::fs::File;
-use std::path::Path;
-use std::io::{BufRead, Read, BufReader};
-use std::iter::IntoIterator;
+use pulldown_cmark::{html, Parser};
 use std::cmp::PartialEq;
-use pulldown_cmark::{Parser, html};
+use std::fs::File;
+use std::io::{BufRead, BufReader, Read};
+use std::iter::IntoIterator;
+use std::path::Path;
 
 // `Block` stores code sections, consisting of comments and associated code.
 // We initialise a new block with empty `Vec` which will later be joined.
@@ -32,7 +31,7 @@ pub struct Options {
 
 impl Block {
     pub fn new(starting_line: usize) -> Block {
-        return Block {
+        Block {
             comment: Vec::new(),
             code: Vec::new(),
             starting_line,
@@ -40,7 +39,7 @@ impl Block {
     }
 
     pub fn new_file(title: &str, path: &str) -> Block {
-        return Block {
+        Block {
             comment: vec![format!("**`{:}`** (in `{:}`)", title, path)],
             code: vec![],
             starting_line: 0,
@@ -48,7 +47,9 @@ impl Block {
     }
 
     pub fn has_code(&self) -> bool {
-        if self.code.len() == 0 { return false }
+        if self.code.is_empty() {
+            return false;
+        }
         self.code.iter().find(|i| i.trim().len() > 0).is_some()
     }
 }
@@ -58,7 +59,7 @@ enum CommentType {
     Simple,
     Bang,
     Doc,
-    ANY
+    ANY,
 }
 
 // We divide the source code into code/comment blocks.
@@ -66,12 +67,11 @@ enum CommentType {
 pub fn extract(path: String) -> Vec<Block> {
     let file = File::open(path).expect("Unable to open input file");
     let mut process_as_code = false;
-    let mut current_comment_type : CommentType = CommentType::ANY;
+    let mut current_comment_type: CommentType = CommentType::ANY;
     let mut blocks: Vec<Block> = Vec::new();
     let mut current_block = Block::new(1);
 
     for (idx, line) in BufReader::new(file).lines().into_iter().enumerate() {
-
         let line_str = line.unwrap().to_string();
         let stripped = line_str.trim();
 
@@ -91,19 +91,18 @@ pub fn extract(path: String) -> Vec<Block> {
         } else {
             let (strip_pos, com_type) = {
                 if stripped.starts_with("///") {
-                    (3,  CommentType::Doc)
+                    (3, CommentType::Doc)
                 } else if stripped.starts_with("//!") {
-                    (3,  CommentType::Bang)
+                    (3, CommentType::Bang)
                 } else if stripped.starts_with("// !") {
-                    (4,  CommentType::Bang)
+                    (4, CommentType::Bang)
                 } else {
-                    (2,  CommentType::Simple)
+                    (2, CommentType::Simple)
                 }
             };
-            
+
             let line = stripped.split_at(strip_pos).1;
-            if current_comment_type != CommentType::ANY &&
-                    com_type != current_comment_type {
+            if current_comment_type != CommentType::ANY && com_type != current_comment_type {
                 // different type of comment, means we assume a new block
                 blocks.push(current_block);
                 current_block = Block::new(idx + 1);
@@ -113,20 +112,20 @@ pub fn extract(path: String) -> Vec<Block> {
         }
     }
     blocks.push(current_block);
-    return blocks;
+    blocks
 }
 
 // Build a full HTML document from a vector of blocks.
 // This function also inlines the CSS.
-pub fn build_html<I: IntoIterator<Item=Block>>(blocks: I, options: Options) -> String {
+pub fn build_html<I: IntoIterator<Item = Block>>(blocks: I, options: Options) -> String {
     let mut html_output = String::new();
 
-    let include_static = |file : String, mut target: &mut String| {
+    let include_static = |file: String, mut target: &mut String| {
         let path = Path::new(&file);
         let is_md = if let Some(ext) = path.extension() {
             match ext.to_str() {
                 Some("md") | Some("mdown") | Some("markdown") => true,
-                _ => false
+                _ => false,
             }
         } else {
             false
@@ -138,12 +137,14 @@ pub fn build_html<I: IntoIterator<Item=Block>>(blocks: I, options: Options) -> S
             f.read_to_string(&mut source).expect("failed  to read file");
             html::push_html(&mut target, Parser::new(&source));
         } else {
-            f.read_to_string(&mut target)
-                .expect("failed to read file");
+            f.read_to_string(&mut target).expect("failed to read file");
         };
     };
 
-    html_output.push_str(&format!(include_str!("static/head.html"), title=options.title));
+    html_output.push_str(&format!(
+        include_str!("static/head.html"),
+        title = options.title
+    ));
 
     if options.with_css {
         html_output.push_str("<style>");
@@ -159,33 +160,43 @@ pub fn build_html<I: IntoIterator<Item=Block>>(blocks: I, options: Options) -> S
         html_output.push_str("</script>");
     };
 
-    options.extra_meta.map(|f| include_static(f, &mut html_output));
+    options
+        .extra_meta
+        .map(|f| include_static(f, &mut html_output));
 
     html_output.push_str("</head><body>");
 
-    options.extra_header.map(|f| include_static(f, &mut html_output));
+    options
+        .extra_header
+        .map(|f| include_static(f, &mut html_output));
 
     html_output.push_str("<div id=\"container\"><div id=\"main\">");
 
     for (i, block) in blocks.into_iter().enumerate() {
-        html_output.push_str(&format!(include_str!("static/block_before.html"), index=i));
+        html_output.push_str(&format!(
+            include_str!("static/block_before.html"),
+            index = i
+        ));
 
         html::push_html(&mut html_output, Parser::new(&block.comment.join("\n")));
 
         if block.has_code() {
-            html_output.push_str(&format!(include_str!("static/block_code.html"),
-                code=block.code.join("\n").replace("<", "&lt;"), start=block.starting_line));
+            html_output.push_str(&format!(
+                include_str!("static/block_code.html"),
+                code = block.code.join("\n").replace("<", "&lt;"),
+                start = block.starting_line
+            ));
         }
 
         html_output.push_str(include_str!("static/block_after.html"));
     }
 
-
     html_output.push_str("</div></div>");
 
-    options.extra_footer.map(|f| include_static(f, &mut html_output));
+    options
+        .extra_footer
+        .map(|f| include_static(f, &mut html_output));
 
     html_output.push_str("</body></html>");
-    
-    return html_output;
+    html_output
 }
