@@ -50,7 +50,7 @@ impl Block {
         if self.code.is_empty() {
             return false;
         }
-        self.code.iter().find(|i| i.trim().len() > 0).is_some()
+        self.code.iter().any(|i| !i.trim().is_empty())
     }
 }
 
@@ -71,7 +71,7 @@ pub fn extract(path: String) -> Vec<Block> {
     let mut blocks: Vec<Block> = Vec::new();
     let mut current_block = Block::new(1);
 
-    for (idx, line) in BufReader::new(file).lines().into_iter().enumerate() {
+    for (idx, line) in BufReader::new(file).lines().enumerate() {
         let line_str = line.unwrap().to_string();
         let stripped = line_str.trim();
 
@@ -160,15 +160,15 @@ pub fn build_html<I: IntoIterator<Item = Block>>(blocks: I, options: Options) ->
         html_output.push_str("</script>");
     };
 
-    options
-        .extra_meta
-        .map(|f| include_static(f, &mut html_output));
+    if let Some(f) = options.extra_meta {
+        include_static(f, &mut html_output)
+    }
 
     html_output.push_str("</head><body>");
 
-    options
-        .extra_header
-        .map(|f| include_static(f, &mut html_output));
+    if let Some(f) = options.extra_header {
+        include_static(f, &mut html_output)
+    }
 
     html_output.push_str("<div id=\"container\"><div id=\"main\">");
 
@@ -193,9 +193,9 @@ pub fn build_html<I: IntoIterator<Item = Block>>(blocks: I, options: Options) ->
 
     html_output.push_str("</div></div>");
 
-    options
-        .extra_footer
-        .map(|f| include_static(f, &mut html_output));
+    if let Some(f) = options.extra_footer {
+        include_static(f, &mut html_output)
+    }
 
     html_output.push_str("</body></html>");
     html_output
