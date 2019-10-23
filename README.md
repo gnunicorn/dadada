@@ -6,6 +6,10 @@ Artisanal Rust inlined code documentation renderer
 
 **Here Screenshot** / Action video
 
+## Install rust
+
+For this to work you need to have rust installed. You can do this with sudo pacman -S rustup, or any other package manager.
+
 ## Install
 
 You can install it quite easily with `cargo install dadada`.
